@@ -7,7 +7,7 @@ import java.util.*;
 @Entity(name="CATEGORY")
 public class Category implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="category_id")
     private Long id;
 
