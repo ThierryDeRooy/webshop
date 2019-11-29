@@ -39,7 +39,7 @@ public class KungApplication {
 		SpringApplication.run(KungApplication.class, args);
 	}
 
-	@Bean
+/*	@Bean
 	public ServletWebServerFactory servletContainer() {
 		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
 			@Override
@@ -55,7 +55,7 @@ public class KungApplication {
 		tomcat.addAdditionalTomcatConnectors(redirectConnector());
 		return tomcat;
 	}
-
+*/
 /*	private Connector redirectConnector() {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 		connector.setScheme("http");
