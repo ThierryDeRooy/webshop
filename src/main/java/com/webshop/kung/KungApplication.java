@@ -66,7 +66,7 @@ public class KungApplication {
 */
 
 
-	@Bean
+/*	@Bean
 	public CommandLineRunner demo(CategoryRepository repository, ProductService productService, ProductDetailsRepository productDetailsRepository, OrderDetailsService orderDetailsService) {
 		return (args) -> {
 //			Category cat = new Category(0L, "comcumber");
@@ -110,7 +110,7 @@ public class KungApplication {
 			productService.addProduct(prodEn);
 		};
 	}
-
+*/
 	/*@Bean
 	public CommandLineRunner demo2(CategoryService service) {
 		return (args) -> {
