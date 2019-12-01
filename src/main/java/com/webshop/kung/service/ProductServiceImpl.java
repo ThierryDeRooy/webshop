@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findMissingProducts(Locale locale) {
-        return productRepository.findMissingProducts(locale.getLanguage());
+        return productRepository.getMissingProducts(locale.getLanguage());
     }
 
     @Override
@@ -61,12 +61,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable("Product")
     public Product findByCode(String lang, String code) {
-        return productRepository.findByCode(lang, code);
+        return productRepository.getByCode(lang, code);
     }
 
     @Override
     public Product findByCodeAndStatus(String lang, String code, Integer status) {
-        return productRepository.findByCodeAndStatus(lang, code, status);
+        return productRepository.getByCodeAndStatus(lang, code, status);
     }
 
     @Override
@@ -76,6 +76,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAllProductsByStatus(Locale locale, Integer status) {
-        return productRepository.findByLangAndStatus(locale.getLanguage(), status);
+        return productRepository.getByLangAndStatus(locale.getLanguage(), status);
     }
 }
