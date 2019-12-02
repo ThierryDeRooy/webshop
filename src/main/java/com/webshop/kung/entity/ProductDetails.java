@@ -9,10 +9,15 @@ import java.util.List;
 @Entity
 public class ProductDetails implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
+    private Long id;
+
+    
     @NotNull
     @Size(min=2,max=5,message="Invalid length for Product Code")
     @Pattern(regexp="[(\\w)]+", message="Invalid Product Code")
-    @Id
     @Column(name="Code", unique = true, nullable = false)
     private String code;
 
