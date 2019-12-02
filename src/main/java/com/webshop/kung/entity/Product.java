@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @Entity
-@Table(uniqueConstraints={
+@Table(name="product", uniqueConstraints={
         @UniqueConstraint(columnNames = {"code", "lang"})
 })
 public class Product implements Serializable {
