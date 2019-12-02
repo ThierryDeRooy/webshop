@@ -41,7 +41,7 @@ public class ProductServiceTest {
         Product prod = new Product(category, lang, "red beat", "nice for eating",prodDet);
  //       productDetailsRepository.save(prodDet);
         productService.addProduct(prod);
-        Product p1 = productService.findByCode("en","A121");
+        Product p1 = productService.findByCode(lang,"A121");
         assertEquals(prod.getProductDetails().getCode(), p1.getProductDetails().getCode());
         assertEquals(prod.getName(), p1.getName());
 //      Assert.assertTrue("List must be empty", catList.);
