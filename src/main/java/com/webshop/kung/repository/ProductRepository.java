@@ -13,12 +13,16 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 //    Product findByCode(String code);
     List<Product> findByLangAndName(Locale lang, String name);
     List<Product> findByLang(Locale lang);
+    Product findById(Long id);
 
     @Query("SELECT P FROM Product P WHERE P.productDetails.status=:status AND P.lang=:locale")
     List<Product> getByLangAndStatus(Locale locale, Integer status);
 
     @Query("SELECT P FROM Product P WHERE P.productDetails.code=:code AND P.lang=:locale")
     Product getByCode(Locale locale, String code);
+    
+    @Query("SELECT P.id FROM Product P WHERE P.productDetails.code=:code AND P.lang=:locale")
+    Long findByCode(Locale locale, String code);
 
     @Query("SELECT P FROM Product P WHERE P.productDetails.code=:code AND P.lang=:locale AND P.productDetails.status=:status")
     Product getByCodeAndStatus(Locale locale, String code, Integer status);
