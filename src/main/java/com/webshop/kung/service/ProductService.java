@@ -15,8 +15,8 @@ public interface ProductService {
     Product addProduct(Product product);
     ProductDetails saveDetails(ProductDetails productDetails);
     ProductDetails findByCode(String code);
-    Product findByCode(String lang, String code);
-    Product findByCodeAndStatus(String lang, String code, Integer status);
+    Product findByCode(Locale lang, String code);
+    Product findByCodeAndStatus(Locale lang, String code, Integer status);
     List<Product> findByLocaleName(Locale locale, String name);
     List<Product> findAllProductsByStatus(Locale locale, Integer status);
 }
