@@ -97,7 +97,7 @@ public class WebController {
             request.getSession().setAttribute("code", code);
         }
 
-        Product product = productService.findByCodeAndStatus(loc.getLanguage(), code, Constants.PRODUCT_ACTIVE);
+        Product product = productService.findByCodeAndStatus(loc, code, Constants.PRODUCT_ACTIVE);
         if (product != null) {
             cartLine.setProduct(product);
             model.addAttribute("cartLine", cartLine);
@@ -309,7 +309,7 @@ public class WebController {
         if (!loc.equals(myCart.getLocale())) {
             myCart.setLocale(loc);
             for (CartLine cartLine : myCart.getCartLines()) {
-                Product langProd = productService.findByCode(loc.getLanguage(), cartLine.getProduct().getProductDetails().getCode());
+                Product langProd = productService.findByCode(loc, cartLine.getProduct().getProductDetails().getCode());
                 if (langProd!=null)
                     cartLine.setProduct(langProd);
             }
