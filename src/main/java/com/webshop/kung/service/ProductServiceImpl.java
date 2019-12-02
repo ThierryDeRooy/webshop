@@ -62,7 +62,10 @@ public class ProductServiceImpl implements ProductService {
     @Cacheable("Product")
     public Product findByCode(Locale lang, String code) {
         Long prodId = productRepository.findByCode(lang, code);
-        return productRepository.findById(prodId);
+        Optional<Product> optProd = productRepository.findById(prodId);
+        if (optProd == null) 
+            return null;
+        return optProd.get();
     }
 
     @Override
