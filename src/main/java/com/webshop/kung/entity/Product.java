@@ -28,6 +28,7 @@ public class Product implements Serializable {
     @Valid
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "code", nullable = false)
+    @Fetch(FetchMode.JOIN)
     private ProductDetails productDetails;
 
     @Column(name="lang")
@@ -39,8 +40,7 @@ public class Product implements Serializable {
     @Column(name="name")
     private String name;
 
-    @NotNull
-    @Size(min=2,max=200,message="Invalid length for Product description")
+    @Size(max=200,message="Invalid length for Product description")
     @Pattern(regexp="[(\\w)(\\s)(\\.),;%!?]+", message="Invalid Product description")
     @Column(name="description")
     private String description;
