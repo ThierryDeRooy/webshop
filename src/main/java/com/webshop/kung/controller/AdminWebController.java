@@ -121,7 +121,7 @@ public class AdminWebController {
                               HttpServletRequest request) {
         Locale loc = LocaleContextHolder.getLocale();
         if (!result.hasErrors()) {
-            Product prod = productService.findByCode(loc.getLanguage(), productInfo.getProduct().getProductDetails().getCode());
+            Product prod = productService.findByCode(loc, productInfo.getProduct().getProductDetails().getCode());
             if ("Add Product".equalsIgnoreCase(submit) && prod != null) {
                 result.rejectValue("product.productDetails.code", "lang.codeAlreadyExists");
             }
@@ -202,7 +202,7 @@ public class AdminWebController {
                 product.getProductDetails().setPhotoLoc(pd.getPhotoLoc());
             }
         }
-        Product prodExist = productService.findByCode(product.getLang().getLanguage(),product.getProductDetails().getCode());
+        Product prodExist = productService.findByCode(product.getLang(),product.getProductDetails().getCode());
         if (prodExist!=null) {
             prodExist.setDescription(product.getDescription());
             prodExist.setName(product.getName());
