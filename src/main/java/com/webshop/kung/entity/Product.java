@@ -1,8 +1,5 @@
 package com.webshop.kung.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -31,7 +28,6 @@ public class Product implements Serializable {
     @Valid
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "code", nullable = false)
-    @Fetch(FetchMode.JOIN)
     private ProductDetails productDetails;
 
     @Column(name="lang")
