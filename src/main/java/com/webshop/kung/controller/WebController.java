@@ -79,7 +79,8 @@ public class WebController {
 
     @GetMapping("/productList")
     public String productList(Model model) {
-        List<Product> products = productService.findAllProductsByStatus(LocaleContextHolder.getLocale(), Constants.PRODUCT_ACTIVE);
+//        List<Product> products = productService.findAllProductsByStatus(LocaleContextHolder.getLocale(), Constants.PRODUCT_ACTIVE);
+        List<Product> products = productService.findAllProducts();
         model.addAttribute("products", products);
         List<Category> cats = categoryService.findMainCategories(LocaleContextHolder.getLocale());
         model.addAttribute("categories", cats);
