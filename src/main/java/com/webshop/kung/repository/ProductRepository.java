@@ -7,13 +7,14 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findByCategory(Category category);
 //    Product findByCode(String code);
     List<Product> findByLangAndName(Locale lang, String name);
     List<Product> findByLang(Locale lang);
-    Product findById(Long id);
+    Optional<Product> findById(Long id);
 
     @Query("SELECT P FROM Product P WHERE P.productDetails.status=:status AND P.lang=:locale")
     List<Product> getByLangAndStatus(Locale locale, Integer status);
