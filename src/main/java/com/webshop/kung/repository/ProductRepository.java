@@ -22,8 +22,8 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Query("SELECT P FROM Product P WHERE P.productDetails.code=:code AND P.lang=:locale")
     Product getByCode(Locale locale, String code);
     
-    @Query("SELECT P.id FROM Product P WHERE P.productDetails.code=:code AND P.lang=:locale")
-    Long findByCode(Locale locale, String code);
+    @Query("SELECT P FROM Product P WHERE P.productDetails.code=:code AND P.lang=:locale")
+    Product findByCode(Locale locale, String code);
 
     @Query("SELECT P FROM Product P WHERE P.productDetails.code=:code AND P.lang=:locale AND P.productDetails.status=:status")
     Product getByCodeAndStatus(Locale locale, String code, Integer status);
