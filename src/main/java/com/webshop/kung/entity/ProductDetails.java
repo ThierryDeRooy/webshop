@@ -9,11 +9,16 @@ import java.util.List;
 @Entity
 public class ProductDetails implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
+
     
     @NotNull
     @Size(min=2,max=5,message="Invalid length for Product Code")
     @Pattern(regexp="[(\\w)]+", message="Invalid Product Code")
-    @Id
+    @Unique
     @Column(name="Code", unique = true, nullable = false)
     private String code;
 
@@ -39,6 +44,14 @@ public class ProductDetails implements Serializable {
     @OneToMany(targetEntity=Product.class, mappedBy="productDetails")
     private List<Product> productList;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;
