@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Entity
 @Table(name="product", uniqueConstraints={
-        @UniqueConstraint(columnNames = {"code", "lang"})
+        @UniqueConstraint(columnNames = {"details_id", "lang"})
 })
 public class Product implements Serializable {
 
