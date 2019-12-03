@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Cacheable("Product")
-    public Product findByCode(String lang, String code) {
+    public Product findByCode(Locale lang, String code) {
         return productRepository.findByCode(lang, code);
     }
 
