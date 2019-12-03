@@ -18,7 +18,6 @@ public class ProductDetails implements Serializable {
     @NotNull
     @Size(min=2,max=5,message="Invalid length for Product Code")
     @Pattern(regexp="[(\\w)]+", message="Invalid Product Code")
-    @Unique
     @Column(name="Code", unique = true, nullable = false)
     private String code;
 
