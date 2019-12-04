@@ -26,7 +26,7 @@ public class Product implements Serializable {
     private Category category;
 
     @Valid
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "details_id", nullable = false)
     private ProductDetails productDetails;
 
