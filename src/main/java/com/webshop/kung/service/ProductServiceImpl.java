@@ -27,9 +27,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-//    @Cacheable("Product")
+    @Cacheable("Product")
     public List<Product> findAllProducts(Locale locale) {
-        System.out.println("LANGUAGE ========= " + locale.getLanguage());
         return (List<Product>)productRepository.findByLang(locale);
     }
 
@@ -61,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-//    @Cacheable("Product")
+    @Cacheable("Product")
     public Product findByCode(Locale lang, String code) {
         return (Product)productRepository.findByCode(lang, code);
     }
@@ -79,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAllProductsByStatus(Locale locale, Integer status) {
-        return (List<Product>)productRepository.findByLang(locale);
-//        return productRepository.getByLangAndStatus(locale, status);
+//        return (List<Product>)productRepository.findByLang(locale);
+        return productRepository.getByLangAndStatus(locale, status);
     }
 }
