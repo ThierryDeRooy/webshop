@@ -78,6 +78,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAllProductsByStatus(Locale locale, Integer status) {
-        return productRepository.getByLangAndStatus(locale, status);
+        return productRepository.findByLang(locale);
+//        return productRepository.getByLangAndStatus(locale, status);
     }
 }
