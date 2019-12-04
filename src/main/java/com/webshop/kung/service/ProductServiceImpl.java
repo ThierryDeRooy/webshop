@@ -29,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable("Product")
     public List<Product> findAllProducts(Locale locale) {
+        System.out.println("LANGUAGE ========= " + locale.getLanguage());
         return (List<Product>)productRepository.findByLang(locale);
     }
 
