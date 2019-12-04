@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable("Product")
     public Product findByCode(Locale lang, String code) {
-        return productRepository.findByCode(lang, code);
+        return (Product)productRepository.findByCode(lang, code);
     }
 
 
@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAllProductsByStatus(Locale locale, Integer status) {
-        return productRepository.findByLang(locale);
+        return (List<Product>)productRepository.findByLang(locale);
 //        return productRepository.getByLangAndStatus(locale, status);
     }
 }
