@@ -211,6 +211,8 @@ public class AdminWebController {
             prodExist.getProductDetails().setPrice(product.getProductDetails().getPrice());
             prodExist.getProductDetails().setPhotoLoc(product.getProductDetails().getPhotoLoc());
             prodExist.getProductDetails().setStatus(product.getProductDetails().getStatus());
+            if (pd!=null)
+                prodExist.getProductDetails().setId(pd.getId());
             product = prodExist;
         }
         if (file!=null) {
