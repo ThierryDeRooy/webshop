@@ -129,6 +129,7 @@ public class AdminWebController {
                 try {
                     copyFile(productInfo.getFile());
                 } catch (IOException e) {
+                    System.out.println("==================================="+ e.getMessage());
                     result.rejectValue("file", "lang.error.fileRejected");
                 }
             }
