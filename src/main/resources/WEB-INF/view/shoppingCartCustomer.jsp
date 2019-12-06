@@ -4,6 +4,7 @@
 <%@ page import="java.math.BigDecimal"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="templates/header.jsp"/>
 
 
@@ -67,13 +68,13 @@
                   <span class="error-message"><form:errors path="phone" cssClass="error" /></span>
             </td>
         </tr>
-        <c:if test="${not empty customerInfo.email}">
+        <sec:authorize access="hasRole('CUSTOMER')">
         <tr>
             <td colspan="2">Save address data for next time
             <input type="checkbox" name="saveAddress"/>
             </td>
         </tr>
-        </c:if>
+        </sec:authorize>
         <tr>
             <td>&nbsp;</td>
             <td><input type="submit" value="Submit" /> <input type="reset"
