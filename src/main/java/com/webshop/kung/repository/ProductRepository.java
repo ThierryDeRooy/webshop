@@ -31,6 +31,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 //    @Query("SELECT P.* FROM product P, LOCALISED_STRINGS L WHERE P.NAME_ID=L.LOCALISED_ID AND L.STRINGS_KEY=:locale AND L.STRINGS LIKE %:name%")
 //    List<Product> getByName(String locale, String name);
 
-    @Query("SELECT prod FROM Product prod where prod.lang<>:locale AND prod.detailsId NOT in (SELECT prod1.detailsId FROM Product prod1 where prod1.lang=:locale)")
+    @Query("SELECT prod FROM Product prod where prod.lang<>:locale AND prod.productDetails.code NOT in (SELECT prod1.productDetails.code FROM Product prod1 where prod1.lang=:locale)")
     List<Product> getMissingProducts(Locale locale);
 }
