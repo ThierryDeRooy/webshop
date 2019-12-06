@@ -34,7 +34,7 @@ public class AdminWebController {
 
 //    private String UPLOADED_FOLDER = "D:\\webshop\\ShoppingCart-master\\kung\\";
 //    private String SUB_FOLDER = "images\\";
-    private String UPLOADED_FOLDER = "D:/webshop/ShoppingCart-master/kung/";
+//    private String UPLOADED_FOLDER = "D:/webshop/ShoppingCart-master/kung/";
     private String SUB_FOLDER = "images/";
 
 //    @Autowired
@@ -236,7 +236,7 @@ public class AdminWebController {
 
     private void copyFile(MultipartFile file) throws IOException {
         String fileName = FilenameUtils.getName(file.getOriginalFilename());
-        FileCopyUtils.copy(file.getBytes(), new File(UPLOADED_FOLDER + SUB_FOLDER + fileName));
+        FileCopyUtils.copy(file.getBytes(), new File(SUB_FOLDER + fileName));
     }
 
 
