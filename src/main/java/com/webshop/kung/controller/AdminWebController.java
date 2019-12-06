@@ -200,6 +200,7 @@ public class AdminWebController {
         if (pd!=null) {
             if (product.getProductDetails().getPhotoLoc() == null) {
                 product.getProductDetails().setPhotoLoc(pd.getPhotoLoc());
+                product.getProductDetails().setId(pd.getId());
             }
         }
         Product prodExist = productService.findByCode(product.getLang(),product.getProductDetails().getCode());
