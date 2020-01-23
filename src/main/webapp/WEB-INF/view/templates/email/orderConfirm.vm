@@ -1,0 +1,46 @@
+<html>
+    <header>
+        <style>
+            .productTable {
+                border-spacing:0px 0;
+            }
+            .productTable th {
+                background-color:#DCDCDC;
+            }
+             .productTable th, td {
+                 text-align:center;
+                 border:1px solid black;
+                 padding:5px
+             }
+            h3 {
+                color: red;
+            }
+        </style>
+    </header>
+
+    <body>
+        <h1>${title}</h1>
+        <h2>${status}</h2>
+        <h3>${smallContent}</h3>
+
+        <table class='productTable'>
+            <tr>
+                <th>${code}</th>
+                <th>${productName}</th>
+                <th>${price}</th>
+                <th>${quantity}</th>
+                <th>${totalPrice}</th>
+            </tr>
+            #foreach( $item in $order.orderDetails )
+                <tr>
+                    <td>$item.product.productDetails.code</td>
+                    <td>$item.productName</td>
+                    <td>$item.price</td>
+                    <td>$item.quantity</td>
+                    <td>$item.totalPrice</td>
+                </tr>
+            #end
+        </table>
+
+    </body>
+</html>
