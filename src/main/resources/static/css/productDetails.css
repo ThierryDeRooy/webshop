@@ -1,0 +1,37 @@
+
+.prodDetailsImg {
+  display: inline-block;
+  vertical-align: text-top;
+}
+.prodDetailsImgIn {
+  max-width:300px;
+}
+
+.detailsDescription {
+    padding:10px;
+    width: 70%;
+    display: inline-block;
+    border:none;
+    background-color : #FFFFF0;
+}
+
+@media screen and (max-width: 630px) {
+  .prodDetailsImg {
+    width: 100%;
+  }
+.prodDetailsdesc {
+  display: block;
+  vertical-align: text-top;
+  width: 100%;
+  }
+}
+@media screen and (min-width: 631px) {
+  .prodDetailsImg {
+    width: 40%;
+  }
+.prodDetailsdesc {
+  display: inline-block;
+  vertical-align: text-top;
+  width: 59%;
+  }
+}

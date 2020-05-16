@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.*"%>
-<%@ page import="com.webshop.kung.entity.Category"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<jsp:include page="templates/header.jsp"/>
-
+<%@ include file="templates/header.jsp" %>
+<%@ page import="com.webshop.entity.Category"%>
 
     <div>
         <div>

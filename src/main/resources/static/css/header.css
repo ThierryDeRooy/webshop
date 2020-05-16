@@ -12,3 +12,22 @@
  .principal {
     color: yellow;
  }
+
+ 	.error{
+ 		color:red
+ 	}
+
+ 	.bg-yellow {
+             background-color: #00FF7F ;
+             background-image: linear-gradient(to bottom right, red, darkRed);
+     }
+
+.logo {
+    height:60px;
+    position:relative;
+}
+
+.shoppingcart {
+    font-size:24px;
+}
+

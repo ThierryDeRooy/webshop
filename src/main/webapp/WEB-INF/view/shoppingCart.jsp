@@ -1,14 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.*"%>
+<%@ include file="templates/header.jsp" %>
 <%@ page import="java.math.BigDecimal"%>
-<%@ page import="com.webshop.kung.constants.*"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<link rel="stylesheet" type="text/css" href="css/table.css">
-<jsp:include page="templates/header.jsp"/>
 
-<div class="page-title">Product List</div>
+<div class="page-title"><spring:message code="lang.productlist" /></div>
 
 <c:if test="${(empty myCart) || (empty myCart.cartLines)}">
     <h2><spring:message code="lang.emptyCart" /></h2>
@@ -23,10 +16,10 @@
    <tr>
     <th><spring:message code="lang.code" /></th>
     <th><spring:message code="lang.productName" /></th>
-    <th><spring:message code="lang.price" /></th>
-    <th><spring:message code="lang.unit" /></th>
+    <th><spring:message code="lang.price" />(EUR)</th>
     <th><spring:message code="lang.quantity" /></th>
-    <th><spring:message code="lang.totalPrice" /></th>
+    <th><spring:message code="lang.BTW" />(EUR)</th>
+    <th><spring:message code="lang.totalPrice" />(EUR)</th>
     <th></th>
    </tr>
    <c:forEach var="myCartLine" items="${myCart.cartLines}" varStatus="status">
@@ -36,28 +29,41 @@
         </td>
         <td>${myCartLine.product.name}</td>
         <td>${myCartLine.product.productDetails.price}</td>
-        <td><spring:message code="lang.per${Constants.PRODUCT_UNITS[myCartLine.product.productDetails.unit]}" /></td>
         <td>
-            <form:input path="cartLines[${status.index}].quantity" value="${myCartLine.quantity}" type="number" />
-            <form:errors path="cartLines[${status.index}].quantity" ><span class="error-message">Enter valid quantity</span></form:errors></li></td>
-        <td>${myCartLine.totalPrice}</td>
+            <form:input path="cartLines[${status.index}].quantity" value="${myCartLine.quantity}" type="number" min="0" max="${stock[myCartLine.product.productDetails.id]}"/>
+            <spring:message code="lang.${Constants.PRODUCT_UNITS[myCartLine.product.productDetails.unit]}" />
+            <form:errors path="cartLines[${status.index}]" class="error-message"></form:errors>
+        </td>
+        <td>${myCartLine.totalPriceInclBtw.subtract(myCartLine.totalPrice)}</td>
+        <td>${myCartLine.totalPriceInclBtw}</td>
         <td><a href="shoppingCartRemoveProduct?code=${myCartLine.product.productDetails.code}">
                                    <spring:message code="lang.delete" />
                                 </a></td>
     </tr>
        </c:forEach>
+       <c:forEach var="orderCost" items="${myCart.orderCosts}" varStatus="status">
+        <tr>
+            <td></td>
+            <td>${orderCost.description}</td>
+            <td>${orderCost.price}</td>
+            <td>${orderCost.quantity}&nbsp;<spring:message code="lang.${Constants.PRODUCT_UNITS[Constants.PER_UNIT]}" /></td>
+            <td>${orderCost.vat}</td>
+            <td>${orderCost.totalPriceInclVat}</td>
+            <td></td>
+        </tr>
+       </c:forEach>
 
     <tr>
-        <td/><td/><td/><td/><td/>
-        <td>${myCart.totalPrice}</td><td/>
+        <td></td><td><spring:message code="lang.totalPrice" /></td><td></td><td></td><td></td>
+        <td>${myCart.totalPriceInclBtw}</td><td></td>
     </tr>
 </table>
-       <div style="clear: both"></div>
-        <input class="button-update-sc" type="submit" value="Update Quantity" />
+       <div class="clearFields"></div>
+        <input class="button-update-sc" type="submit" value="<spring:message code='update.quantity' />" />
         <a class="navi-item"
-           href="/shoppingCartCustomer">Enter Customer Info</a>
+           href="/shoppingCartCustomer"><spring:message code="enter.customer.info" /></a>
         <a class="navi-item"
-           href="/productList">Continue Buy</a>
+           href="/productList"><spring:message code="continue.buy" /></a>
 
 </form:form>
 <br/>

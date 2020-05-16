@@ -1,0 +1,139 @@
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+  display: inline-block;
+}
+.cardImg {
+    height:300px;
+}
+.cardProdNameOuterbox {
+    height:100px;
+}
+.cardProdNameInnerbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.oneLine {
+    overflow: hidden;
+    white-space: nowrap;
+}
+.cardList {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  height: 80px;
+  min-width: 600px;
+  margin: auto;
+  vertical-align: middle;
+  font-family: arial;
+  margin: 3px;
+  display: block;
+}
+.price {
+  color: grey;
+  font-size: 22px;
+}
+.cardListImg {
+  margin: auto;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20%;
+  float: left;
+}
+.cardListImgIn {
+    max-height:80px;
+}
+.cardListName {
+  margin: auto;
+  vertical-align: middle;
+  display: inline-block;
+  float : left;
+  width: 40%
+}
+.listName {
+  font-size: 24px;
+  color: blue;
+}
+.cardListPrice {
+  margin: auto;
+  vertical-align: middle;
+  display: inline-block;
+  float: left;
+  width: 20%;
+}
+.cardListButton {
+  margin: auto;
+  vertical-align: middle;
+  display: inline-block;
+  text-align: right;
+    float: right;
+}
+.buttonCard {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+.buttonCardList  {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: RED;
+  text-align: right;
+  cursor: pointer;
+  font-size: 18px;
+}
+.card button:hover {
+  opacity: 0.7;
+}
+.responsive {
+  height: 100%;
+  width: auto;
+}
+.breadcrumbPlace{
+  margin: 20px;
+  text-align: left;
+}
+ul.cat-list {
+  background: #cd3232;
+  padding: 1px;
+}
+ul.cat-list li {
+  text-align: center;
+  background: #ffc67f;
+  margin: 1px;
+}
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid red;
+}
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid red;
+}
+.sort {
+  float: right;
+  padding: 1px;
+}
+.pageButton {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+

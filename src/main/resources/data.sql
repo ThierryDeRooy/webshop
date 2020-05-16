@@ -1,6 +1,12 @@
-INSERT INTO country (country_id, country, lang, code) VALUES (11, 'BELGIUM', 'en','001');
-INSERT INTO country (country_id, country, lang, code) VALUES (12, 'BELGIE', 'nl','001');
-INSERT INTO country (country_id, country, lang, code) VALUES (13, 'NETHERLANDS', 'en','002');
-INSERT INTO country (country_id, country, lang, code) VALUES (14, 'NEDERLAND', 'nl','002');
-INSERT INTO country (country_id, country, lang, code) VALUES (15, 'GERMANY', 'en','003');
-INSERT INTO country (country_id, country, lang, code) VALUES (16, 'DUITSLAND', 'nl','003');
+create table persistent_logins (username varchar(64) not null, series varchar(64) primary key, token varchar(64) not null, last_used timestamp not null);
+INSERT INTO country (country_id, country, lang, code) VALUES (1, 'BELGIUM', 'en','001');
+INSERT INTO country (country_id, country, lang, code) VALUES (2, 'BELGIE', 'nl','001');
+INSERT INTO country (country_id, country, lang, code) VALUES (3, 'NETHERLANDS', 'en','002');
+INSERT INTO country (country_id, country, lang, code) VALUES (4, 'NEDERLAND', 'nl','002');
+INSERT INTO country (country_id, country, lang, code) VALUES (5, 'GERMANY', 'en','003');
+INSERT INTO country (country_id, country, lang, code) VALUES (6, 'DUITSLAND', 'nl','003');
+INSERT INTO country (country_id, country, lang, code) VALUES (7, 'FRANCE', 'en','004');
+INSERT INTO transport_cost (id, country_id, points, cost_price, VAT) VALUES(1, 1, 23, 7.25, 0);
+INSERT INTO transport_cost (id, country_id, points, cost_price, VAT) VALUES(2, 3, 24, 6.25, 0);
+INSERT INTO transport_cost (id, country_id, points, cost_price, VAT) VALUES(3, 5, 22, 8.25, 0);
+INSERT INTO web_User (id, email, password, role, username, totp_Enabled, verified, wrong_tries) VALUES (1, 'thierryderooy@yahoo.com', '{bcrypt}$2a$10$VupDIU.M/KCSrBn7T71fveSPdAWaHZunV4daHx0ym63bYYQavfISm','ADMIN', 'admin',false, true, 0);

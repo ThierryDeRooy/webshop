@@ -5,6 +5,10 @@ $(document).ready(function(){
     e.stopPropagation();
     e.preventDefault();
   });
+
+  var logoutAct = document.getElementById("logoutID");
+  if (logoutAct!=null)
+    logoutAct.addEventListener("click", formSubmit);
 });
 
     function setCode(id, value) {
@@ -12,4 +16,9 @@ $(document).ready(function(){
         el_code.value = value;
 
     }
+
+    function formSubmit() {
+    	document.getElementById("logoutForm").submit();
+    }
+
 

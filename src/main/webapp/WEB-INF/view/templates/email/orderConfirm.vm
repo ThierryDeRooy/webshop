@@ -19,28 +19,37 @@
     </header>
 
     <body>
+        <img src="cid:Logo" alt="Logo" height="50" style="display: inline-block"/>
         <h1>${title}</h1>
-        <h2>${status}</h2>
+        <p>${dearCustomer}</p>
+        <p>${content}</p>
+
+        <br/>
         <h3>${smallContent}</h3>
 
         <table class='productTable'>
             <tr>
                 <th>${code}</th>
                 <th>${productName}</th>
-                <th>${price}</th>
                 <th>${quantity}</th>
+                <th>${price}</th>
+                <th>${vat}</th>
                 <th>${totalPrice}</th>
             </tr>
-            #foreach( $item in $order.orderDetails )
+            #foreach( $item in $orderlines )
                 <tr>
-                    <td>$item.product.productDetails.code</td>
-                    <td>$item.productName</td>
+                    <td>$item.code</td>
+                    <td>$item.description</td>
+                    <td><span>$item.quantity</Span> <span>$item.unit</span></td>
                     <td>$item.price</td>
-                    <td>$item.quantity</td>
-                    <td>$item.totalPrice</td>
+                    <td>$item.totalVat</td>
+                    <td>$item.totalPriceInclVat</td>
                 </tr>
             #end
         </table>
+        <br/>
+        <p>${thanks}</p>
+        <p>Barry & Kung Groentenhandel</p>
 
     </body>
 </html>

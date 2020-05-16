@@ -28,3 +28,8 @@
 .signin {
   background-color: #f1f1f1;
   text-align: center;
+}
+
+.signup {
+    border:1px solid #ccc;
+}

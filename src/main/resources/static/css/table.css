@@ -9,14 +9,43 @@
   padding: 8px;
 }
 
-.twoColorTable tr:nth-child(even){background-color: #f2f2f2;}
+.twoColorTable tr:nth-child(even){background-color: #ffffff;}
 
 .twoColorTable tr:hover {background-color: #ddd;}
 
 .twoColorTable th {
   padding-top: 12px;
   padding-bottom: 12px;
-  text-align: left;
+  text-align: center;
   background-color: #4CAF50;
   color: white;
+}
+
+j {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.up {
+  transform: rotate(-135deg);
+  transform-origin: 60% 60%;
+  -webkit-transform-origin: 60% 60%;
+  -webkit-transform: rotate(-135deg);
+
+}
+
+.down {
+  transform: rotate(45deg);
+  transform-origin: 60% 60%;
+  -webkit-transform: rotate(45deg);
+  -webkit-transform-origin: 60% 60%;
+}
+.sortButton {
+	float: right;
+}
+
+.clearFields {
+    clear: both;
 }
