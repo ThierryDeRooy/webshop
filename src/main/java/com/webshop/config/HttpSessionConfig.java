@@ -36,6 +36,7 @@ public class HttpSessionConfig {
             public void sessionDestroyed(HttpSessionEvent hse) {
                 log.info((new Date()).toString() + " SESSION DESTROYED: " + hse.getSession().getId() + " time="
                         + new Date(hse.getSession().getLastAccessedTime()));
+                log.info("username=" + hse.getSession().getAttribute("username"));
 //                removeReservedStock(hse.getSession());
                 Utils.removeCartFromSessionsStock(hse.getSession());
                 sessions.remove(hse.getSession().getId());

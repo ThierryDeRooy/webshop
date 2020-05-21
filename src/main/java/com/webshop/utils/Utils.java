@@ -4,6 +4,7 @@ import com.webshop.config.HttpSessionConfig;
 import com.webshop.entity.Order;
 import com.webshop.model.Cart;
 import com.webshop.model.CartLine;
+import com.webshop.userDetails.AuthenticationSuccessHandlerImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -89,5 +90,14 @@ public class Utils {
             }
         }
         return sessionsStock;
+    }
+
+    public static void destroyAllUserSessions(String user) {
+        List<HttpSession> sessions = HttpSessionConfig.getActiveSessions();
+        for (HttpSession session : sessions) {
+            if (user.equals(session.getAttribute(AuthenticationSuccessHandlerImpl.USERNAME))) {
+                session.invalidate();
+            }
+        }
     }
 }

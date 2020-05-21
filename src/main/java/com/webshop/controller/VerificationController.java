@@ -5,6 +5,7 @@ import com.webshop.model.PasswordChange;
 import com.webshop.repository.WebUserRepository;
 import com.webshop.repository.CustomerRepository;
 import com.webshop.service.VerificationService;
+import com.webshop.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -109,13 +110,14 @@ public class VerificationController {
         } else {
 //                boolean checkPw = BCrypt.checkpw(oldPassword, adminRepository.findByUsername(userName).getPassword());
             String oldPassword = newPassword.getOldPassword();
-            boolean checkPw = oldPassword != null ? encoder.matches(oldPassword, webUser.getPassword()) : false;
+            boolean checkPw = oldPassword != null && encoder.matches(oldPassword, webUser.getPassword());
             if (checkPw) {
 //                model = checkPassword(model, password, confirmPassword);
 //                if (model.containsAttribute("error"))
 //                    return "changePassword";
                 webUser.setPassword(encoder.encode(newPassword.getPassword()));
                 webUserRepository.save(webUser);
+                Utils.destroyAllUserSessions(webUser.getUsername());
                 model.addAttribute("success", "password.successfully.changed");
                 return "changePassword";
             } else {

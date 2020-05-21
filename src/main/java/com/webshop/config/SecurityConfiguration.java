@@ -5,11 +5,14 @@ import com.webshop.model.Authorities;
 import com.webshop.userDetails.AuthenticationSuccessHandlerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -18,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.sql.DataSource;
 
@@ -67,7 +72,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .mvcMatchers("/showTransportCosts", "/saveTransportCost", "/showCountries", "/saveCountry", "/removeCountry", "/showInvoice", "/resendEmail").hasRole("ADMIN")
                     .mvcMatchers("/account", "/setup-totp", "/confirm-totp").hasRole("ADMIN")
 //                .anyRequest().denyAll();
-                    .anyRequest().permitAll();
+                    .anyRequest().permitAll()
+                    .and()
+                .sessionManagement()
+                    .sessionFixation().migrateSession()
+                    .maximumSessions(1).maxSessionsPreventsLogin(false).sessionRegistry(sessionRegistry());
 
 //        http.addFilterBefore(totpAuthFilter, UsernamePasswordAuthenticationFilter.class)
 //                .authorizeRequests().antMatchers("/addNewCategory/**", "/addNewProduct/**", "/showOrders/**", "/newAdmin/**").hasRole("ADMIN")
@@ -82,15 +91,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  //               .anyRequest().authenticated().and().formLogin();
         http.csrf().ignoringAntMatchers("/setup-totp", "/confirm-totp");
         // for H2 console
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
+//        http.csrf().disable();
+//        http.headers().frameOptions().disable();
 
         // CSP headers
-//        http.headers()
-//                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
-//                        "script-src 'self' https://localhost:8443 https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/"))
-//                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
-//                "frame-src 'self' https://www.google.com/recaptcha/"));
+        http.headers()
+                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
+                        "script-src 'self' https://localhost:8443 https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/"))
+                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
+                "frame-src 'self' https://www.google.com/recaptcha/"));
         http.headers().cacheControl().disable();
 
 
@@ -128,6 +137,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         DelegatingPasswordEncoder encoder =  (DelegatingPasswordEncoder) PasswordEncoderFactories.createDelegatingPasswordEncoder();
         encoder.setDefaultPasswordEncoderForMatches(new BCryptPasswordEncoder());
         return encoder;
+    }
+
+    // Work around https://jira.spring.io/browse/SEC-2855
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        SessionRegistry sessionRegistry = new SessionRegistryImpl();
+        return sessionRegistry;
+    }
+
+    // Register HttpSessionEventPublisher
+    @Bean
+    public static ServletListenerRegistrationBean httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
     }
 
 
