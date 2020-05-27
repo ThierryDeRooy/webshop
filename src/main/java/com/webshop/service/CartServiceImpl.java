@@ -61,7 +61,7 @@ public class CartServiceImpl implements CartService {
             return;
         }
         if (sessionLine != null && line.getQuantity()>=0) {
-            int newQuantity = SessionsStock.addLimit(line.getProduct().getProductDetails().getId(), line.getQuantity() - sessionLine.getQuantity(), prdDetails.getStock());
+            int newQuantity = SessionsStock.getLimit(line.getProduct().getProductDetails().getId(), line.getQuantity() - sessionLine.getQuantity(), prdDetails.getStock());
             if (sessionLine.getQuantity() + newQuantity > 0) {
                 sessionLine.setQuantity(sessionLine.getQuantity() + newQuantity);
                 sessionLine.getProduct().setProductDetails(prdDetails);
@@ -69,7 +69,7 @@ public class CartServiceImpl implements CartService {
                 sessionCart.removeCartLine(sessionLine);
             }
         } else if (line.getQuantity()>=0) {
-            int newQuantity = SessionsStock.addLimit(line.getProduct().getProductDetails().getId(), line.getQuantity(), prdDetails.getStock());
+            int newQuantity = SessionsStock.getLimit(line.getProduct().getProductDetails().getId(), line.getQuantity(), prdDetails.getStock());
             if (newQuantity>0) {
                 line.setQuantity(newQuantity);
                 sessionCart.addCartLine(line);
@@ -113,7 +113,7 @@ public class CartServiceImpl implements CartService {
             order.setCustomer(regCustomer);
         }
         order.setStatus(Constants.ORDER_CREATED);
-        orderService.addOrder(order);
+        orderService.saveOrder(order);
         for (CartLine cartLine : myCart.getCartLines()) {
             BigDecimal discount = new BigDecimal(0);
             OrderDetails orderDetails = new OrderDetails(order, cartLine.getProduct(), cartLine.getProduct().getName(),

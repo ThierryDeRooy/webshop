@@ -5,7 +5,7 @@ import com.webshop.entity.Order;
 import java.util.List;
 
 public interface OrderService {
-    public Order addOrder(Order order);
+    public Order saveOrder(Order order);
     public Order findById(Long id);
     public Order findByIdAndUsernameAndStatusNot(Long id, String username, int status);
     public List<Order> getAllOrders();

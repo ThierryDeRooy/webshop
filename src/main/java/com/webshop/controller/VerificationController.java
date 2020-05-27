@@ -1,13 +1,19 @@
 package com.webshop.controller;
 
+import com.webshop.config.HttpSessionConfig;
 import com.webshop.entity.WebUser;
 import com.webshop.model.PasswordChange;
 import com.webshop.repository.WebUserRepository;
 import com.webshop.repository.CustomerRepository;
 import com.webshop.service.VerificationService;
+import com.webshop.userDetails.AuthenticationSuccessHandlerImpl;
 import com.webshop.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,16 +23,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class VerificationController {
 
     private final VerificationService verificationService;
-    private final CustomerRepository customerRepository;
     private final PasswordEncoder encoder;
     private final WebUserRepository webUserRepository;
+    private final PersistentTokenRepository persistentTokenRepository;
+    private final SessionRegistry sessionRegistry;
 
     @GetMapping("/verify/email")
     public String verifyEmail(@RequestParam String id) {
@@ -117,8 +127,11 @@ public class VerificationController {
 //                    return "changePassword";
                 webUser.setPassword(encoder.encode(newPassword.getPassword()));
                 webUserRepository.save(webUser);
-                Utils.destroyAllUserSessions(webUser.getUsername());
+//                Utils.destroyAllUserSessions(webUser.getUsername());
+                destroyAllUserSessions();
                 model.addAttribute("success", "password.successfully.changed");
+                SecurityContextHolder.clearContext();
+                persistentTokenRepository.removeUserTokens(webUser.getUsername());
                 return "changePassword";
             } else {
                 model.addAttribute("error", "wrong.password");
@@ -128,27 +141,25 @@ public class VerificationController {
         }
     }
 
+    @GetMapping("/removeSession")
+    public String removeSession(@RequestParam String sessionId){
+        if (sessionId != null) {
+            List<HttpSession> actSessions = HttpSessionConfig.getActiveSessions();
+            for (HttpSession session : actSessions) {
+                if (sessionId.equals(session.getId())) {
+                    session.invalidate();
+                }
+            }
+        }
+        return "redirect:/sessions";
+    }
 
-
-//    private Model checkPassword(Model model, String password, String confirmPassword) {
-//        PasswordPolicyValidator passwordPolicyValidator = new PasswordPolicyValidator();
-//        List<String> errorList = passwordPolicyValidator.getErrors(password);
-//        if (!errorList.isEmpty()) {
-//            List<String> tempList = new ArrayList<>();
-//            for (String item : errorList) {
-//                if (item.startsWith("{") && item.endsWith("}"))
-//                    tempList.add(item.substring(1,item.length()-1));
-//                else
-//                    tempList.add(item);
-//            }
-//            model.addAttribute("error", tempList);
-//            return model;
-//        } else if (!password.equals(confirmPassword)) {
-//            errorList.add("passwords.not.match");
-//            model.addAttribute("error", errorList);
-//            return model;
-//        }
-//        return model;
-//    }
+    private void destroyAllUserSessions() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<SessionInformation> sessions = sessionRegistry.getAllSessions(principal, false);
+        for (SessionInformation session : sessions) {
+            session.expireNow();
+        }
+    }
 
 }

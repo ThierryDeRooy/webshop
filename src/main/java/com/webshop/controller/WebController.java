@@ -175,7 +175,7 @@ public class WebController {
             for (CartLine cartLine : cart.getCartLines()) {
                 if (code.equals(cartLine.getProduct().getProductDetails().getCode())) {
                     cart.removeCartLine(cartLine);
-                    SessionsStock.add(cartLine.getProduct().getProductDetails().getId(), -cartLine.getQuantity());
+//                    SessionsStock.add(cartLine.getProduct().getProductDetails().getId(), -cartLine.getQuantity());
 //                    productService.updateReservedStock(cartLine.getProduct().getProductDetails(), 0, cartLine.getQuantity());
 //                    clearCache();
                     break;

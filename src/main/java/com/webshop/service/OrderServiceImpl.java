@@ -20,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
     private CustomerService customerService;
 
     @Override
-    public Order addOrder(Order order) {
+    public Order saveOrder(Order order) {
         return orderRepository.save(order);
     }
 

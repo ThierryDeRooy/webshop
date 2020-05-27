@@ -5,9 +5,12 @@ import com.webshop.entity.Order;
 import com.webshop.model.Cart;
 import com.webshop.model.CartLine;
 import com.webshop.userDetails.AuthenticationSuccessHandlerImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,18 +29,26 @@ public class Utils {
     }
 
     public static void removeCartInSession(HttpServletRequest request) {
-        removeCartFromSessionsStock(request.getSession());
+//        removeCartFromSessionsStock(request.getSession());
         request.getSession().removeAttribute("myOrders");
     }
 
-    public static void removeCartFromSessionsStock(HttpSession session){
-        Cart cart = (Cart) session.getAttribute("myOrders");
-        if (cart != null) {
-            for (CartLine line : cart.getCartLines()) {
-                SessionsStock.add(line.getProduct().getProductDetails().getId(), -line.getQuantity());
-            }
-        }
-    }
+//    public static void removeCartFromSessionsStock(HttpSession session){
+//        Cart cart = (Cart) session.getAttribute("myOrders");
+//        if (cart != null) {
+//            for (CartLine line : cart.getCartLines()) {
+//                SessionsStock.add(line.getProduct().getProductDetails().getId(), -line.getQuantity());
+//            }
+//        }
+//    }
+//    public static void addCartFromSessionsStock(HttpSession session){
+//        Cart cart = (Cart) session.getAttribute("myOrders");
+//        if (cart != null) {
+//            for (CartLine line : cart.getCartLines()) {
+//                SessionsStock.add(line.getProduct().getProductDetails().getId(), line.getQuantity());
+//            }
+//        }
+//    }
 
     public static void storeLastOrderedCartInSession(HttpServletRequest request, Cart cartInfo) {
         request.getSession().setAttribute("lastOrderedCart", cartInfo);
@@ -92,12 +103,12 @@ public class Utils {
         return sessionsStock;
     }
 
-    public static void destroyAllUserSessions(String user) {
-        List<HttpSession> sessions = HttpSessionConfig.getActiveSessions();
-        for (HttpSession session : sessions) {
-            if (user.equals(session.getAttribute(AuthenticationSuccessHandlerImpl.USERNAME))) {
-                session.invalidate();
-            }
-        }
-    }
+//    public static void destroyAllUserSessions(String user) {
+//        List<HttpSession> sessions = HttpSessionConfig.getActiveSessions();
+//        for (HttpSession session : sessions) {
+//            if (user.equals(session.getAttribute(AuthenticationSuccessHandlerImpl.USERNAME))) {
+//                session.invalidate();
+//            }
+//        }
+//    }
 }

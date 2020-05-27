@@ -27,7 +27,7 @@
   <script src="js/header.js"></script>
 
 </head>
-<body style="background: #DEFDD1;">
+<body>
 
 	<c:url value="/logout" var="logoutUrl" />
 	<form action="${logoutUrl}" method="post" id="logoutForm">
@@ -55,7 +55,7 @@
               <a class="dropdown-item" href="showTransportCosts">TransportCost</a>
               <a class="dropdown-item" href="showCountries">Countries</a>
               <a class="dropdown-item" href="showOrders">Show Orders</a>
-              <a class="dropdown-item" href="newAdmin">new Admin user</a>
+              <a class="dropdown-item" href="webusers">Admin users</a>
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="account">MFA</a></li>

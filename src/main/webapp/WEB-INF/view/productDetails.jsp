@@ -40,5 +40,6 @@
 <br/>
 
 <script src="js/productDetails.js"></script>
+<jsp:include page="templates/footer.jsp"/>
 </body>
 </html>

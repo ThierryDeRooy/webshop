@@ -38,4 +38,14 @@
 
 
 
-</div>
+            </div>
+           </div>
+          </div>
+          </div>
+     </section>
+   </form>
+
+ <jsp:include page="templates/footer.jsp"/>
+
+</body>
+</html>

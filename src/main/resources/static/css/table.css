@@ -9,7 +9,7 @@
   padding: 8px;
 }
 
-.twoColorTable tr:nth-child(even){background-color: #ffffff;}
+.twoColorTable tr:nth-child(n+2){background-color: #ffffff;}
 
 .twoColorTable tr:hover {background-color: #ddd;}
 

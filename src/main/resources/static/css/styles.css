@@ -9,7 +9,7 @@ body {
 //    max-width: 860px;
     min-width: 300px;
     margin: 0px auto;
-    background: #F8F8F8;
+    background: #DEFDD1;
     padding:0px 5px;
     text-align:center;
 }
@@ -138,8 +138,8 @@ table td {
 }
 .bg-yellow {
     font-size: large;
-    background-color: red ;
-    background-image: linear-gradient(to bottom right, red, Crimson);
+    background-color: #00FF7F;
+    background-image: linear-gradient(to bottom right, green, lime);
 }
 .logo {
     height:60px;

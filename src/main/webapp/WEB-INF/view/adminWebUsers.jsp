@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/register.css">
 
-<form action="#" class="signup" action="register" method="POST" enctype="utf8">
+
 <section id="loginform" class="outer-wrapper">
 			<div class="inner-wrapper">
 				<div class="container">
@@ -45,8 +45,47 @@
 				</div>
 			</div>
 		</section>
-		</form>
+
 <br/>
+
+
+<h2>all webusers</h2>
+<table class="twoColorTable tablesorter" >
+    <thead>
+    <tr>
+        <th>UserName</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Multifactor Authentication</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="webuser" items="${webUsers}">
+        <tr>
+            <td>${webuser.username}</td>
+            <td>${webuser.email}</td>
+            <td>${webuser.role}</td>
+            <td>${webuser.totpEnabled}</td>
+            <td><form:form action="removeWebUser" modelAttribute="webUser" method="POST">
+                    <form:hidden path="username" value="${webuser.username}"/>
+                    <button type="submit">REMOVE</button>
+                </form:form>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+
+
+
+
+
+<link rel="stylesheet" href="css/ext/theme.default.css">
+ <script src="js/ext/jquery.tablesorter.min.js"></script>
+
+
+<jsp:include page="templates/footer.jsp"/>
 
 </body>
 </html>

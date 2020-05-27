@@ -23,7 +23,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +40,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 @RequiredArgsConstructor
@@ -66,6 +73,10 @@ public class AdminWebController {
     private final InvoiceService invoiceService;
     private final EmailService emailService;
     private final CartService cartService;
+    private final CustomerService customerService;
+    private final PersistentTokenRepository persistentTokenRepository;
+    private final SessionRegistry sessionRegistry;
+
 
     @Autowired
     private CacheManager cacheManager;   // autowire cache manager
@@ -102,27 +113,6 @@ public class AdminWebController {
                 model.addAttribute("categories", getCategoriesForAdmin());
                 return "adminCategory";
             }
-//            Category category = null;
-//            if (categoryDisplay.getIds().get(lang) != null)
-//                category = categoryService.findCategory(categoryDisplay.getIds().get(lang));
-//            if (category == null)
-//                category = new Category();
-//            category.setLang(new Locale(lang));
-//            category.setCode(categoryDisplay.getCode());
-//            category.setName(categoryDisplay.getNames().get(lang));
-//            if (categoryDisplay.getUpperCatCode()==null || "".equalsIgnoreCase(categoryDisplay.getUpperCatCode())) {
-//                category.setUpperCategory(null);
-//            } else {
-//                category.setUpperCategory(categoryService.findCategory(categoryDisplay.getUpperCatCode(), new Locale(lang)));
-//            }
-//            if (categoryService.findCategory(category.getCode(), category.getLang())!=null && category.getId()==null){
-//                result.rejectValue("code", "lang.catCodeAlreadyExists");
-//                model.addAttribute("upperCats", (List<Category>) categoryService.listCategories(new Locale("en")));
-//                model.addAttribute("categories", getCategoriesForAdmin());
-//                return "adminCategory";
-//            }
-//            categoryService.addCategory(category);
-//            clearCache();
         }
         return "redirect:/showCategories";
 
@@ -179,39 +169,6 @@ public class AdminWebController {
             } catch (IOException e) {
                 result.rejectValue("file", "lang.error.fileRejected");
             }
-//            ProductDetails productDetails = productService.findByCode(productInfo.getProduct().getProductDetails().getCode());
-//            if (productDetails!=null && productDetails.getStock()+stockToAdd<0)
-//                result.rejectValue("product.productDetails.stock", "lang.stock.not.neg");
-//            if (productInfo.getProduct().getProductDetails().getId()==null) {
-//                if (productDetails==null) {
-//                    //add new productDetails
-//                } else {
-//                    Product prod = productService.findByCode(loc, productInfo.getProduct().getProductDetails().getCode());
-//                    if (prod!=null) {
-//                        result.rejectValue("product.productDetails.code", "lang.codeAlreadyExists");
-//                    } else {
-//                        // update productDetail + add new product
-//                    }
-//                }
-//            } else {
-//                if (productDetails == null) {
-//                    // update productDetail + add new product
-//                } else {
-//                    if (productInfo.getProduct().getProductDetails().getId() == productDetails.getId()) {
-//                        // update productDetail + add new product
-//                    } else {
-//                        result.rejectValue("product.productDetails.code", "lang.codeAlreadyExists");
-//                    }
-//                }
-//            }
-//
-//            if (!productInfo.getFile().isEmpty()) {
-//                try {
-//                    copyFile(productInfo.getFile());
-//                } catch (IOException e) {
-//                    result.rejectValue("file", "lang.error.fileRejected");
-//                }
-//            }
         }
         if (result.hasErrors()) {
             model.addAttribute("categorien", getOrderCats());
@@ -240,7 +197,7 @@ public class AdminWebController {
 //                        productService.updateReservedStock(cartLine.getProduct().getProductDetails(), 0, cartLine.getQuantity());
 //                        clearCache();
                             cart.removeCartLine(cartLine);
-                            SessionsStock.add(cartLine.getProduct().getProductDetails().getId(), -cartLine.getQuantity());
+//                            SessionsStock.add(cartLine.getProduct().getProductDetails().getId(), -cartLine.getQuantity());
                             break;
                         }
                     }
@@ -249,6 +206,7 @@ public class AdminWebController {
             } catch (Exception ex) {
             }
          }
+//        SessionsStock.reset(prodDetailsId);
         return "redirect:/addNewProduct";
     }
 
@@ -396,7 +354,7 @@ public class AdminWebController {
     public String updateOrder(@ModelAttribute("chosenOrder") Order order) {
         Order myOrder = orderService.findById(order.getId());
         myOrder.setStatus(order.getStatus());
-        orderService.addOrder(myOrder);
+        orderService.saveOrder(myOrder);
         return "redirect:/showOrders";
     }
 
@@ -413,19 +371,13 @@ public class AdminWebController {
     }
 
 
-    @GetMapping("/newAdmin")
-    public String createNewAdmin(Model model) {
-        model.addAttribute("newUser", new WebUserModel());
-        return "addNewAdmin";
-    }
-
     @PostMapping("/newAdmin")
     public String register(@Valid @ModelAttribute("newUser") WebUserModel newUser,
                            BindingResult result,
                            Model model,
                            HttpServletRequest request) {
         if(result.hasErrors()) {
-            return "addNewAdmin";
+            return "adminWebUsers";
         }
         WebUser webUser = new WebUser(newUser.getUsername(),
                 newUser.getEmail().toLowerCase(),
@@ -437,10 +389,41 @@ public class AdminWebController {
 
         webUserRepository.save(webUser);
         eventPublisher.publishEvent(new UserRegistrationEvent(webUser, "newAdminVerification", request));
-        return "redirect:newAdmin?adminCreated="+newUser.getUsername();
+        return "redirect:webusers?adminCreated="+newUser.getUsername();
 
     }
 
+    @RequestMapping("/sessions")
+    public String getSessions(Model model) {
+        model.addAttribute("sessions", HttpSessionConfig.getActiveSessions());
+        return "sessions";
+    }
+
+    @GetMapping("/webusers")
+    public String allWebUsers(Model model) {
+        model.addAttribute("newUser", new WebUserModel());
+        model.addAttribute("webUser", new WebUser());
+        List<WebUser> webusers = StreamSupport.stream(webUserRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+        model.addAttribute("webUsers", webusers);
+        return "adminWebUsers";
+    }
+
+
+    @PostMapping("/removeWebUser")
+    public String removeWebUser(@ModelAttribute("webUser") WebUser webUser,
+                                BindingResult result,
+                                Model model) {
+        WebUser webuserToRemove = webUserRepository.findByUsername(webUser.getUsername());
+        if (webuserToRemove!=null) {
+            Customer customerToRemove = customerService.findByUsername(webuserToRemove.getUsername());
+            customerService.deleteCustomer(customerToRemove);
+            webUserRepository.delete(webuserToRemove);
+            persistentTokenRepository.removeUserTokens(webuserToRemove.getUsername());
+            destroyAllUserSessions(webuserToRemove.getUsername());
+        }
+        return "redirect:/webusers";
+    }
 
     private List<CategoryDisplay> getCategoriesForAdmin() {
         List<Category> catList = categoryService.findAll();
@@ -491,35 +474,6 @@ public class AdminWebController {
         return result;
     }
 
-//    private synchronized void updateProduct(Product product, MultipartFile file, int addToStock) {
-//        ProductDetails pd = null;
-//        if (product.getProductDetails().getId()!=null) {
-//            pd = productService.findById(product.getProductDetails().getId());
-//        } else {
-//            pd = productService.findByCode(product.getProductDetails().getCode());
-//        }
-//        if (pd!=null) {
-//            product.getProductDetails().setId(pd.getId());
-//            if (product.getProductDetails().getPhotoLoc() == null) {
-//                product.getProductDetails().setPhotoLoc(pd.getPhotoLoc());
-//            }
-//        }
-//        if (file!=null) {
-//            String fileName = FilenameUtils.getName(file.getOriginalFilename());
-//            if (fileName != null && !fileName.isEmpty())
-//                product.getProductDetails().setPhotoLoc(SUB_FOLDER + fileName);
-//        }
-//        productService.saveDetails(product.getProductDetails(), addToStock);
-////        productService.updateStock(product.getProductDetails(), addToStock);
-//
-//        Product prodExist = productService.findByLangAndCode(product.getLang(),product.getProductDetails().getCode());
-//        if (prodExist!=null) {
-//            product.setId(prodExist.getId());
-//        }
-//
-//        productService.addProductOnly(product);
-//        clearCache();
-//    }
 
     private List<CountryDisplay> getCountriesForAdmin() {
         List<Country> countryList = countryService.findAllCountries();
@@ -605,5 +559,21 @@ public class AdminWebController {
     private Locale getLocale() {
         return new Locale(LocaleContextHolder.getLocale().getLanguage());
     }
+
+    private void destroyAllUserSessions(String user) {
+        List<Object> principals = sessionRegistry.getAllPrincipals();
+        for (Object principal : principals) {
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                if (user.equals(userDetails.getUsername())) {
+                    List<SessionInformation> sessions = sessionRegistry.getAllSessions(principal, false);
+                    for (SessionInformation session : sessions) {
+                        session.expireNow();
+                    }
+                }
+            }
+        }
+    }
+
 
 }

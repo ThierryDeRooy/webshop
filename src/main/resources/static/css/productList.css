@@ -103,28 +103,37 @@
   margin: 20px;
   text-align: left;
 }
+.catDiv {
+    width: 95%;
+}
 ul.cat-list {
-  background: #cd3232;
+  background: #32cd32;
   padding: 1px;
 }
 ul.cat-list li {
   text-align: center;
-  background: #ffc67f;
+  background: #7FFFD4;
   margin: 1px;
+}
+.pageCtl {
+    background: #7FFFD4;
+    border: 2px solid #32cd32;
+    margin: 5px;
+    width: 95%;
 }
 .arrow-up {
   width: 0;
   height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
-  border-bottom: 15px solid red;
+  border-bottom: 15px solid green;
 }
 .arrow-down {
   width: 0;
   height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
-  border-top: 15px solid red;
+  border-top: 15px solid green;
 }
 .sort {
   float: right;
@@ -134,6 +143,11 @@ ul.cat-list li {
   padding: 0;
   border: none;
   background: none;
+}
+.paging {
+    float: right;
+    background: #7FFFD4;
+    padding:10px;
 }
 
 

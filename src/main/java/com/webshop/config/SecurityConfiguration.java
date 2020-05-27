@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -55,12 +56,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authenticationSuccessHandler(new AuthenticationSuccessHandlerImpl())
                     .and()
                 .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/login")
                     .deleteCookies("remember-me")
                     .and()
                 .authorizeRequests()
-                    .mvcMatchers("/h2").permitAll()
-                    .mvcMatchers("/", "/home", "/contact", "/login", "/error", "/login-error", "/register", "/pwReset", "/sendUsername", "/chgpwemail", "/verify/email").permitAll()
+                   .mvcMatchers("/h2").permitAll()
+                    .mvcMatchers("/", "/home", "/contact", "/login", "/logout", "/error", "/login-error", "/register", "/pwReset", "/sendUsername", "/chgpwemail", "/verify/email").permitAll()
                     .mvcMatchers("/changePasswordNoOld", "/login-verified", "/newAdminVerificationemail").permitAll()
                     .mvcMatchers( "/productList", "/buyProduct", "/orderProduct", "/shoppingCart", "/shoppingCartRemoveProduct", "/shoppingCartCustomer", "/shoppingCartConfirmation").permitAll()
                     .mvcMatchers("/img/**", "/images/**").permitAll()
@@ -68,15 +70,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .mvcMatchers("/changePassword").authenticated()
                     .mvcMatchers("/showOrderList", "/orderSame", "/orderIdentically").hasRole("CUSTOMER")
                     .mvcMatchers("/totp-login","/totp-login-error").hasAuthority(Authorities.TOTP_AUTH_AUTHORITY)
-                    .mvcMatchers("/showCategories", "/saveCategory", "/addNewProduct", "/saveProduct", "/showOrders", "/newAdmin", "/updateOrder", "/deleteOrder", "/removeProductFromBaskets").hasRole("ADMIN")
-                    .mvcMatchers("/showTransportCosts", "/saveTransportCost", "/showCountries", "/saveCountry", "/removeCountry", "/showInvoice", "/resendEmail").hasRole("ADMIN")
+                    .mvcMatchers("/showCategories", "/saveCategory", "/addNewProduct", "/saveProduct", "/showOrders", "/webusers", "/removeWebUser", "/updateOrder", "/deleteOrder", "/removeProductFromBaskets").hasRole("ADMIN")
+                    .mvcMatchers("/showTransportCosts", "/saveTransportCost", "/showCountries", "/saveCountry", "/removeCountry", "/showInvoice", "/resendEmail", "/sessions", "removeSession").hasRole("ADMIN")
                     .mvcMatchers("/account", "/setup-totp", "/confirm-totp").hasRole("ADMIN")
-//                .anyRequest().denyAll();
+//                    .anyRequest().denyAll()
                     .anyRequest().permitAll()
                     .and()
                 .sessionManagement()
                     .sessionFixation().migrateSession()
-                    .maximumSessions(1).maxSessionsPreventsLogin(false).sessionRegistry(sessionRegistry());
+                    .maximumSessions(10).expiredUrl("/logout").maxSessionsPreventsLogin(false).sessionRegistry(sessionRegistry());
 
 //        http.addFilterBefore(totpAuthFilter, UsernamePasswordAuthenticationFilter.class)
 //                .authorizeRequests().antMatchers("/addNewCategory/**", "/addNewProduct/**", "/showOrders/**", "/newAdmin/**").hasRole("ADMIN")
@@ -91,15 +93,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  //               .anyRequest().authenticated().and().formLogin();
         http.csrf().ignoringAntMatchers("/setup-totp", "/confirm-totp");
         // for H2 console
-//        http.csrf().disable();
-//        http.headers().frameOptions().disable();
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
 
         // CSP headers
-        http.headers()
-                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
-                        "script-src 'self' https://localhost:8443 https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/"))
-                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
-                "frame-src 'self' https://www.google.com/recaptcha/"));
+//        http.headers()
+//                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
+//                        "script-src 'self' https://localhost:8443 https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/"))
+//                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
+//                "frame-src 'self' https://www.google.com/recaptcha/"));
         http.headers().cacheControl().disable();
 
 

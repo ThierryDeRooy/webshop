@@ -16,12 +16,12 @@ import java.util.Set;
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-    public static final String USERNAME = "username";
+//    public static final String USERNAME = "username";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        request.getSession().setAttribute(USERNAME, request.getParameter(USERNAME));
+//        request.getSession().setAttribute(USERNAME, request.getParameter(USERNAME));
         if(requiresTotpAuthentication(authentication)) {
             redirectStrategy.sendRedirect(request, response, "/totp-login");
         } else {

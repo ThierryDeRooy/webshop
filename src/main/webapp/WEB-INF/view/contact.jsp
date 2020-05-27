@@ -22,5 +22,7 @@
 <br/><span class="contactTitle"><spring:message code="facebook" /></span></p>
 <p><a href="https://www.facebook.com/profile.php?id=100002261900423" target="_blank"><img src="img/findusfb.png" border="0"></a></p>
 </div>
+
+<jsp:include page="templates/footer.jsp"/>
 </body>
 </html>

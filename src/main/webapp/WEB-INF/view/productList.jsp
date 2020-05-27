@@ -89,14 +89,14 @@ public void printSubCategoriesList(JspWriter out, List<Category> categories) thr
     <div class="col-sm-3 col-lg-2">
 
 
-        <div>
-            <ul class="cat-list">
+        <div class="catDiv" style="">
+            <ul class="cat-list" style="width: 100%;">
                 <li><a href="?category=all">* CATEGORIES *</a></li>
                 <%printSubCategoriesList(out, (List<Category>) request.getAttribute("categories"));%>
             </ul>
         </div>
 
-        <div style="background:#ffc67f; border: 2px solid #cd3232;margin: 5px; float: right;">
+        <div class="pageCtl">
             <div >
             <form id="pageSizeForm" action="productList">
                 <p><spring:message code="lang.pageSize" />
@@ -144,7 +144,7 @@ public void printSubCategoriesList(JspWriter out, List<Category> categories) thr
     <a href="productList?weergave=lijst"><i class="fa fa-bars"></i></a>
  </div>
 
-<div style="float: right;background: light red; padding:10px;">
+<div class="paging">
 <div style="display: inline-block;">
  <c:if test="${pageNr > 0}" >
     <form action="productList">
@@ -249,7 +249,7 @@ public void printSubCategoriesList(JspWriter out, List<Category> categories) thr
 </div>
 
 
-<div style="float: right;background: limegreen; padding:10px;">
+<div class="paging">
 <div style="display: inline-block;">
  <c:if test="${pageNr > 0}" >
     <form action="productList">
@@ -295,6 +295,7 @@ public void printSubCategoriesList(JspWriter out, List<Category> categories) thr
 
 
 <script src="js/productList.js"></script>
+<jsp:include page="templates/footer.jsp"/>
 
 </body>
 </html>

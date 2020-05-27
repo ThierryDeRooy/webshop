@@ -48,5 +48,8 @@
 		</table>
 		</form>
 	</div>
+
+<jsp:include page="templates/footer.jsp"/>
+
 </body>
 </html>

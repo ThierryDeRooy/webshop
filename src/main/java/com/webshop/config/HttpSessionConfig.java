@@ -29,6 +29,7 @@ public class HttpSessionConfig {
             public void sessionCreated(HttpSessionEvent hse) {
 //                hse.getSession().setMaxInactiveInterval(5);
                 sessions.put(hse.getSession().getId(), hse.getSession());
+//                Utils.addCartFromSessionsStock(hse.getSession());
                 log.info("SESSION CREATED: " + hse.getSession().getId());
             }
 
@@ -38,7 +39,7 @@ public class HttpSessionConfig {
                         + new Date(hse.getSession().getLastAccessedTime()));
                 log.info("username=" + hse.getSession().getAttribute("username"));
 //                removeReservedStock(hse.getSession());
-                Utils.removeCartFromSessionsStock(hse.getSession());
+//                Utils.removeCartFromSessionsStock(hse.getSession());
                 sessions.remove(hse.getSession().getId());
 
             }

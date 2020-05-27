@@ -6,5 +6,6 @@ public interface CustomerService {
 
     public Customer saveUser(Customer customer);
     public Customer findByUsername( String username);
+    public void deleteCustomer(Customer customer);
 
 }

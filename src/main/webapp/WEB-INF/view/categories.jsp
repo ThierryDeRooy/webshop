@@ -29,5 +29,6 @@
             Click on this <strong><a href="next">link</a></strong> to visit another page.
         </div>
     </div>
+<jsp:include page="templates/footer.jsp"/>
 </body>
 </html>

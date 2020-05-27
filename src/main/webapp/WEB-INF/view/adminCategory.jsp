@@ -88,6 +88,7 @@
  <script src="js/ext/jquery.tablesorter.min.js"></script>
 <script src="js/adminCategory.js"></script>
 
+<jsp:include page="templates/footer.jsp"/>
 
 </body>
 </html>
