@@ -8,6 +8,7 @@ import com.webshop.exception.CategoryAlreadyExistsException;
 import com.webshop.exception.ProductException;
 import com.webshop.repository.TransportCostRepository;
 import com.webshop.repository.WebUserRepository;
+import com.webshop.userDetails.AuthenticationSuccessHandlerImpl;
 import com.webshop.utils.SessionsStock;
 import com.webshop.utils.Utils;
 import com.webshop.model.*;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -399,6 +401,19 @@ public class AdminWebController {
         return "sessions";
     }
 
+    @GetMapping("/removeSession")
+    public String removeSession(@RequestParam String sessionId){
+        if (sessionId != null) {
+            List<HttpSession> actSessions = HttpSessionConfig.getActiveSessions();
+            for (HttpSession session : actSessions) {
+                if (sessionId.equals(session.getId())) {
+                    session.invalidate();
+                }
+            }
+        }
+        return "redirect:/sessions";
+    }
+
     @GetMapping("/webusers")
     public String allWebUsers(Model model) {
         model.addAttribute("newUser", new WebUserModel());
@@ -573,7 +588,27 @@ public class AdminWebController {
                 }
             }
         }
+        for (HttpSession session : HttpSessionConfig.getActiveSessions()) {
+            if (user.equals(session.getAttribute(AuthenticationSuccessHandlerImpl.USERNAME)))
+                session.invalidate();
+        }
     }
+
+
+//    private List<HttpSession> setSessionAttribute(List<HttpSession> sessions) {
+//        for (HttpSession session : sessions) {
+//            SessionInformation sessionInformation = sessionRegistry.getSessionInformation(session.getId());
+//            if (sessionInformation != null) {
+//                Object principal = sessionInformation.getPrincipal();
+//                if (principal instanceof UserDetails) {
+//                    UserDetails userDetails = (UserDetails) principal;
+//                    session.setAttribute("username", userDetails.getUsername());
+//                    session.setAttribute("role", userDetails.getAuthorities().toString());
+//                }
+//            }
+//        }
+//        return sessions;
+//    }
 
 
 }

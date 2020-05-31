@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Controller;
@@ -141,24 +142,18 @@ public class VerificationController {
         }
     }
 
-    @GetMapping("/removeSession")
-    public String removeSession(@RequestParam String sessionId){
-        if (sessionId != null) {
-            List<HttpSession> actSessions = HttpSessionConfig.getActiveSessions();
-            for (HttpSession session : actSessions) {
-                if (sessionId.equals(session.getId())) {
-                    session.invalidate();
-                }
-            }
-        }
-        return "redirect:/sessions";
-    }
-
     private void destroyAllUserSessions() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<SessionInformation> sessions = sessionRegistry.getAllSessions(principal, false);
         for (SessionInformation session : sessions) {
             session.expireNow();
+        }
+        if (principal instanceof UserDetails) {
+            String user = ((UserDetails) principal).getUsername();
+            for (HttpSession session : HttpSessionConfig.getActiveSessions()) {
+                if (user.equals(session.getAttribute(AuthenticationSuccessHandlerImpl.USERNAME)))
+                    session.invalidate();
+            }
         }
     }
 

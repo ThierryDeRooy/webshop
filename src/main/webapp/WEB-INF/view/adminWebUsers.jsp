@@ -31,10 +31,13 @@
 								<div class="form-group">
 									<label>ROLE</label>
 									<form:select path="role" class="form-control" >
+									    <form:option value="PROD_ADMIN" label="PRODUCT ADMIN" />
+									    <form:option value="ORDER_ADMIN" label="ORDER ADMIN" />
+									    <form:option value="USER_ADMIN" label="USER ADMIN" />
 									    <form:option value="ADMIN" label="ADMIN" />
 									</form:select>
 								</div>
-								<button type="submit" class="signupbtn signup_btn">CREATE ADMIN</button>
+								<button type="submit" class="signupbtn signup_btn" >CREATE ADMIN</button>
 
  </form:form>
 
@@ -50,7 +53,7 @@
 
 
 <h2>all webusers</h2>
-<table class="twoColorTable tablesorter" >
+<table class="twoColorTable tablesorter" id="itemsTable">
     <thead>
     <tr>
         <th>UserName</th>
@@ -67,8 +70,8 @@
             <td>${webuser.email}</td>
             <td>${webuser.role}</td>
             <td>${webuser.totpEnabled}</td>
-            <td><form:form action="removeWebUser" modelAttribute="webUser" method="POST">
-                    <form:hidden path="username" value="${webuser.username}"/>
+            <td><form:form action="removeWebUser" modelAttribute="webUser" method="POST" class="removeActionForm">
+                    <form:hidden path="username" value="${webuser.username}" class="removeUsername"/>
                     <button type="submit">REMOVE</button>
                 </form:form>
             </td>
@@ -77,13 +80,11 @@
     </tbody>
 </table>
 
-
-
-
+<script src="js/orderTable.js"></script>
 
 <link rel="stylesheet" href="css/ext/theme.default.css">
  <script src="js/ext/jquery.tablesorter.min.js"></script>
-
+ <script src="js/adminWebUsers.js"></script>
 
 <jsp:include page="templates/footer.jsp"/>
 

@@ -46,16 +46,23 @@
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="productList"><spring:message code="lang.shop" /></a></li>
-        <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+        <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('PROD_ADMIN') || pageContext.request.isUserInRole('ORDER_ADMIN') || pageContext.request.isUserInRole('USER_ADMIN')}">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">ADMIN</a>
           <div class="dropdown-menu">
+            <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('PROD_ADMIN')}">
               <a class="dropdown-item" href="showCategories">Category</a>
               <a class="dropdown-item" href="addNewProduct">Product</a>
               <a class="dropdown-item" href="showTransportCosts">TransportCost</a>
               <a class="dropdown-item" href="showCountries">Countries</a>
+             </c:if>
+             <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('ORDER_ADMIN')}">
               <a class="dropdown-item" href="showOrders">Show Orders</a>
+             </c:if>
+             <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('USER_ADMIN')}">
               <a class="dropdown-item" href="webusers">Admin users</a>
+              <a class="dropdown-item" href="sessions">User sessions</a>
+             </c:if>
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="account">MFA</a></li>

@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -70,9 +69,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .mvcMatchers("/changePassword").authenticated()
                     .mvcMatchers("/showOrderList", "/orderSame", "/orderIdentically").hasRole("CUSTOMER")
                     .mvcMatchers("/totp-login","/totp-login-error").hasAuthority(Authorities.TOTP_AUTH_AUTHORITY)
-                    .mvcMatchers("/showCategories", "/saveCategory", "/addNewProduct", "/saveProduct", "/showOrders", "/webusers", "/removeWebUser", "/updateOrder", "/deleteOrder", "/removeProductFromBaskets").hasRole("ADMIN")
-                    .mvcMatchers("/showTransportCosts", "/saveTransportCost", "/showCountries", "/saveCountry", "/removeCountry", "/showInvoice", "/resendEmail", "/sessions", "removeSession").hasRole("ADMIN")
-                    .mvcMatchers("/account", "/setup-totp", "/confirm-totp").hasRole("ADMIN")
+                    .mvcMatchers("/showCategories", "/saveCategory", "/addNewProduct", "/saveProduct", "/removeProductFromBaskets", "/showTransportCosts", "/saveTransportCost", "/showCountries", "/saveCountry", "/removeCountry").hasAnyRole("ADMIN", "PROD_ADMIN")
+                    .mvcMatchers("/showOrders", "/updateOrder", "/deleteOrder", "/showInvoice", "/resendEmail").hasAnyRole("ADMIN", "ORDER_ADMIN")
+                    .mvcMatchers( "/webusers", "/removeWebUser", "/sessions", "removeSession").hasAnyRole("ADMIN", "USER_ADMIN")
+                     .mvcMatchers("/account", "/setup-totp", "/confirm-totp").hasAnyRole("ADMIN", "PROD_ADMIN", "ORDER_ADMIN", "USER_ADMIN")
 //                    .anyRequest().denyAll()
                     .anyRequest().permitAll()
                     .and()
@@ -104,6 +104,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                "frame-src 'self' https://www.google.com/recaptcha/"));
         http.headers().cacheControl().disable();
 
+        
 
 //        http.sessionManagement().maximumSessions(1);
     }

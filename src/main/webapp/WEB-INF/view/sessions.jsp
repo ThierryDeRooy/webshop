@@ -1,11 +1,12 @@
 <%@ include file="templates/header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:useBean id="creationDate" class="java.util.Date" />
 <jsp:useBean id="lastAccessDate" class="java.util.Date" />
 
 
 
-<h2>SESSIONS</h2>
+<h2>SESSIONS  (${fn:length(sessions)})</h2>
 <div class="container-fluid">
     <div class="row">
     <div class="tableDetails">
@@ -15,6 +16,7 @@
     <tr>
         <th>ID</th>
         <th>USER</th>
+        <th>ROLE</th>
         <th>BASKET</th>
         <th>START TIME</th>
         <th>TIME Last ACTION</th>
@@ -28,6 +30,7 @@
             <tr>
                 <td>${sess.id}</td>
                 <td>${sess.getAttribute("username")}</td>
+                <td>${sess.getAttribute("role")}</td>
                 <td>${sess.getAttribute("myOrders").totalPriceInclBtw}</td>
                 <td><fmt:formatDate value="${creationDate}" pattern="dd/MM/yyyy hh:mm:ss a" /></td>
                 <td><fmt:formatDate value="${lastAccessDate}" pattern="dd/MM/yyyy hh:mm:ss a" /></td>
