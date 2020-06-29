@@ -58,10 +58,10 @@ $(document).ready(function(){
         document.getElementById('btnSubmitId').value = document.getElementById("modify-"+ctr).innerHTML;
         var myImg = document.getElementById("productImagePhoto");
         if (myImg) {
-            myImg.setAttribute("src", document.getElementById("photoLocID"+ctr).getAttribute("value"));
+            myImg.setAttribute("src", "images/" + document.getElementById("prodCodeID-"+ctr).innerHTML + "/" + document.getElementById("photoLocID"+ctr).getAttribute("value"));
         } else {
             var elemImage = document.createElement("img");
-            elemImage.setAttribute("src", document.getElementById("photoLocID"+ctr).getAttribute("value"));
+            elemImage.setAttribute("src", "images/" + document.getElementById("prodCodeID-"+ctr).innerHTML + "/" + document.getElementById("photoLocID"+ctr).getAttribute("value"));
             elemImage.setAttribute("class", "product-image");
             elemImage.setAttribute("id", "productImagePhoto");
             document.getElementById('productImage').appendChild(elemImage);

@@ -194,7 +194,7 @@ public void printSubCategoriesList(JspWriter out, List<Category> categories) thr
     <c:if test="${product.productDetails.stock - sessionsStock[product.productDetails.id] > 0}">
 <div class="card sortItem" >
     </c:if>
-  <img class="cardImg" src="<c:url value='${product.productDetails.photoLoc}'/>" alt="${product.productDetails.code}" />
+  <img class="cardImg" src="<c:url value='${imageFolder}${product.productDetails.code}/${product.productDetails.photoLoc}'/>" alt="${product.productDetails.code}" />
   <div class="cardProdNameOuterbox">
     <div class="cardProdNameInnerbox">
         <h1 class="sortName">${product.name}</h1>
@@ -223,7 +223,7 @@ public void printSubCategoriesList(JspWriter out, List<Category> categories) thr
         <div class="cardList sortItem">
     </c:if>
         <div class="cardListImg" >
-        <img class="responsive cardListImgIn" src="<c:url value='${product.productDetails.photoLoc}'/>" alt="${product.productDetails.code}" />
+        <img class="responsive cardListImgIn" src="<c:url value='${imageFolder}${product.productDetails.code}/${product.productDetails.photoLoc}'/>" alt="${product.productDetails.code}" />
         </div>
         <div class="cardListName" >
           <p><span class="listName sortName">${product.name}</span><br/>

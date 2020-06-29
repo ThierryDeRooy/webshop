@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -93,15 +94,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  //               .anyRequest().authenticated().and().formLogin();
         http.csrf().ignoringAntMatchers("/setup-totp", "/confirm-totp");
         // for H2 console
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
+//        http.csrf().disable();
+//        http.headers().frameOptions().disable();
 
         // CSP headers
-//        http.headers()
-//                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
-//                        "script-src 'self' https://localhost:8443 https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/"))
-//                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
-//                "frame-src 'self' https://www.google.com/recaptcha/"));
+        http.headers()
+                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
+                        "script-src 'self' https://localhost:8443 https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/"))
+                .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
+                "frame-src 'self' https://www.google.com/recaptcha/"));
         http.headers().cacheControl().disable();
 
         

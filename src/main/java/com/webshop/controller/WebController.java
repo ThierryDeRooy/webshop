@@ -11,9 +11,11 @@ import com.webshop.service.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
+@PropertySource("classpath:application.properties")
 public class WebController {
 
     @InitBinder
@@ -38,6 +41,12 @@ public class WebController {
         StringTrimmerEditor ste = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class, ste);
     }
+
+    @Value("${file.mainfolder}")
+    private String UPLOADED_FOLDER;
+    @Value("${file.subfolder}")
+    private String SUB_FOLDER;
+
 
     private static final Logger log = LoggerFactory.getLogger(WebController.class);
 
@@ -90,6 +99,7 @@ public class WebController {
                               @RequestParam(required = false) String search) {
 
         model = getProducts(request, model, pageNo, pageSize, sortBy, direction, search);
+        model.addAttribute("imageFolder", SUB_FOLDER);
         setWeergaveProductList(request);
 
         return "productList";
@@ -116,6 +126,10 @@ public class WebController {
  //       model.addAttribute("newCartLine", new CartLine());
         List<Category> cats = categoryService.findMainCategories(loc);
         model.addAttribute("categories", cats);
+        model.addAttribute("imageFolder", SUB_FOLDER);
+        File imagesFolder = new File(SUB_FOLDER+product.getProductDetails().getCode());
+        File[] images = imagesFolder.listFiles();
+        model.addAttribute("images", images);
 
         return "productDetails";
     }

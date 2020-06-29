@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updateProduct(Locale locale, Product product, MultipartFile file, int addToStock) throws IOException, ProductException {
         if (file!=null && !file.isEmpty()) {
-            FileTools.copyFile(file, UPLOADED_FOLDER+SUB_FOLDER);
+            FileTools.copyFile(file, UPLOADED_FOLDER+SUB_FOLDER+product.getProductDetails().getCode());
         }
         ProductDetails productDetails = null;
         if (product.getProductDetails().getId()!=null) {
@@ -135,7 +136,7 @@ public class ProductServiceImpl implements ProductService {
         if (file!=null) {
             String fileName = FilenameUtils.getName(file.getOriginalFilename());
             if (fileName != null && !fileName.isEmpty())
-                product.getProductDetails().setPhotoLoc(SUB_FOLDER + fileName);
+                product.getProductDetails().setPhotoLoc(fileName);
         }
         saveDetails(product.getProductDetails(), addToStock);
         Product prodExist = findByLangAndCode(product.getLang(),product.getProductDetails().getCode());

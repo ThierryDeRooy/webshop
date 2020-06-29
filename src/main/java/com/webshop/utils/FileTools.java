@@ -17,8 +17,14 @@ public class FileTools {
 
 
     public static  void copyFile(MultipartFile file, String location) throws IOException {
+        File fileDir = new File(location);
+        if (!fileDir.exists()) {
+            boolean dirCreated = fileDir.mkdir();
+            if (!dirCreated)
+                throw new IOException("Directory '" + location + "' could NOT be created");
+        }
         String fileName = FilenameUtils.getName(file.getOriginalFilename());
-        File squareFile = new File(location + fileName);
+        File squareFile = new File(location + File.separator +fileName);
         ImageIO.write(cropImageSquare(file), "jpg", squareFile);
 //        FileCopyUtils.copy(squareFile, new File(UPLOADED_FOLDER + SUB_FOLDER + fileName));
 //        FileCopyUtils.copy(file.getBytes(), new File(UPLOADED_FOLDER + SUB_FOLDER + fileName));

@@ -118,7 +118,7 @@ public class WebshopApplication {
 
 			Locale lang = new Locale("en");
 			log.info("going to create ProdDetails ---");
-			ProductDetails prodDet = new ProductDetails("002", new BigDecimal(12.11), new BigDecimal(9), Constants.PER_UNIT, "images/lemongrass1.jpg", 8, new BigDecimal(1));
+			ProductDetails prodDet = new ProductDetails("002", new BigDecimal(12.11), new BigDecimal(9), Constants.PER_UNIT, "lemongrass1.jpg", 8, new BigDecimal(1));
 			log.info("ProdDetails created ---");
 //			productDetailsRepository.save(prodDet);
 			log.info("ProdDetails saved ---");
@@ -129,13 +129,13 @@ public class WebshopApplication {
 			productService.updateProduct(new Locale("nl"), prodNl, null, 0);
 //			productService.addProduct(prodNl);
 
-			prodDet = new ProductDetails("003", new BigDecimal(42.41), new BigDecimal(9.50), Constants.PER_WEIGHT_KG, "images/chinese-chive-chives.jpg", 7, eenBigDec);
+			prodDet = new ProductDetails("003", new BigDecimal(42.41), new BigDecimal(9.50), Constants.PER_WEIGHT_KG, "chinese-chive-chives.jpg", 7, eenBigDec);
 //			productDetailsRepository.save(prodDet);
 			prodEn = new Product(cat, lang, "chinese chive", "nice for cooking",prodDet);
 			productService.updateProduct(lang, prodEn, null, 7);
 //			productService.addProduct(prodEn);
 
-			prodDet = new ProductDetails("A125", new BigDecimal(1.11), new BigDecimal(21), Constants.PER_UNIT, "images/apple.jpg", 10, new BigDecimal((1.25)));
+			prodDet = new ProductDetails("A125", new BigDecimal(1.11), new BigDecimal(21), Constants.PER_UNIT, "apple.jpg", 10, new BigDecimal((1.25)));
 //			productDetailsRepository.save(prodDet);
 			prodEn = new Product(catF, lang, "apple", "healthy",prodDet);
 			productService.updateProduct(lang, prodEn, null, 10);

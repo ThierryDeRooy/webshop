@@ -1,4 +1,6 @@
 <%@ include file="templates/header.jsp" %>
+  <link href="css/ext/fotorama.css" rel="stylesheet">
+  <script src="js/ext/fotorama.js"></script>
 
 <link rel="stylesheet" type="text/css" href="css/productDetails.css">
 <div class="page-title">Product Details</div>
@@ -6,9 +8,11 @@
 <div class="container-fluid">
     <div class="row">
     <c:if test="${cartLine != null}">
-<div class="prodDetailsImg">
-    <img src="<c:url value='${cartLine.product.productDetails.photoLoc}'/>" class="prodDetailsImgIn"/>
-</div>
+    <div class="fotorama prodDetailsImg" data-nav="thumbs" data-width="700" data-ratio="700/700" data-max-width="100%">
+      <c:forEach items="${images}" var="image">
+        <img src="<c:url value='${image}'/>">
+      </c:forEach>
+    </div>
 <div class="prodDetailsdesc">
     <p><spring:message code="lang.code" />: <span>${cartLine.product.productDetails.code}</span></p>
     <h1>${cartLine.product.name}</h1>
